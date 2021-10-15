@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AIWeb</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <h1 class="mb-4">AI + Django created by Duy Dung</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %} {{form}}
+          <input class="btn btn-primary" type="submit" value="Submit" />
+        </form>
+      </div>
+      {%for item in object_list%}
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="row container">
+            <div class="row container">
+              <h5 style="text-align: center">Origin Image</h5>
+            </div>
+            <div class="row container">
+              <img
+                src="{{item.imageOrigin.url}}"
+                class="rounded"
+                alt="..."
+                style="
+                  width: 320px;
+                  height: 300px;
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              />
+            </div>
+          </div>
+          <div class="row container">
+            <div class="row container">
+              <h5 style="text-align: center">Background Image</h5>
+            </div>
+            <div class="row container">
+              <img
+                src="{{item.imageBackground.url}}"
+                class="rounded"
+                alt="..."
+                style="
+                  width: 320px;
+                  height: 300px;
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <h5 style="text-align: center">New Image</h5>
+          <img
+            src="{{item.imagePredict.url}}"
+            class="rounded float-start"
+            alt="..."
+            style="width: 640px; height: 600px"
+          />
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </body>
+</html>
