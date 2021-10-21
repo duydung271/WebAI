@@ -1,34 +1,33 @@
 
 # Create your views here.
-from rest_framework import generics
+import os
+from django.conf import settings
 from rest_framework.response import Response
-from api.custom_renderers import JPEGRenderer
-from rest_framework.views import APIView
-
-from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework import serializers
+from .modelAI import image_decode, image_encode, predict_image
 
-from api.models import ImageData
-from .serializers import FileSerializer
 
-from .modelAI import predict_image
+class ImageSerializer(serializers.Serializer):
+  origin = serializers.CharField(max_length=10000000)
+  background = serializers.CharField(max_length=10000000)
 
-class ImageAPIView (generics.RetrieveAPIView):
-    renderer_classes = [JPEGRenderer]
-    def get(self, request, *args, **kwargs):
-        queryset = ImageData.objects.last()
-        queryset.imagePredict.name = predict_image(queryset.imageOrigin.path, queryset.imageBackground.path)
-        queryset.save()
-        data = queryset.imagePredict
-        return Response(data, content_type='image/jpg')
+class PredictSerializer(serializers.Serializer):
+  predict = serializers.CharField(max_length=10000000)    
 
-class FileView(APIView):
-  parser_classes = (MultiPartParser, FormParser)
+class ImageAPI(APIView):
 
-  def post(self, request, *args, **kwargs):
-    file_serializer = FileSerializer(data=request.data)
-    if file_serializer.is_valid():
-      file_serializer.save()
-      return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-    else:
-      return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  def post(self, request):
+    serializer = ImageSerializer(data = request.data)
+    if serializer.is_valid():
+      img_origin = image_decode(serializer.validated_data['origin'], "origin.png")
+      img_background = image_decode(serializer.validated_data['background'], "background.png")
+      img_predict = predict_image(os.path.join(settings.MEDIA_ROOT, img_origin),os.path.join(settings.MEDIA_ROOT, img_background))
+
+      base64_image = image_encode(img_predict)
+      data = {'predict': base64_image}
+      predict_serializer =PredictSerializer(data=data)
+      if predict_serializer.is_valid():
+        return Response(predict_serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)

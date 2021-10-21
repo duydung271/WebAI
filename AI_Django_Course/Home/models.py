@@ -4,4 +4,3 @@ from django.db import models
 class Holder(models.Model):
     imageOrigin = models.ImageField()
     imageBackground = models.ImageField(default='depqua.jpg')
-    imagePredict = models.ImageField()

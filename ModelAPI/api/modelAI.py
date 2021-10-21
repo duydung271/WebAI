@@ -1,3 +1,4 @@
+import base64
 import os
 from django.conf import settings
 import numpy as np
@@ -31,3 +32,18 @@ def predict_image(origin_image_path, background_image_path):
         img_cut[:,:,i] = np.multiply(img_origin[:,:,i],img_pred_resize[:,:,0])+ np.multiply(img_background[:,:,i],img_pred_resize[:,:,1])
     cv2.imwrite(os.path.join(settings.MEDIA_ROOT,img_name), img_cut)
     return img_name
+
+
+def image_decode(base64_img,img_name):
+    base64_img_bytes = base64_img.encode('utf-8')
+    with open(os.path.join(settings.MEDIA_ROOT, img_name), 'wb') as file_to_save:
+        decoded_image_data = base64.decodebytes(base64_img_bytes)
+        file_to_save.write(decoded_image_data)
+        return img_name
+
+def image_encode(img_name):
+    with open(os.path.join(settings.MEDIA_ROOT, img_name), 'rb') as binary_file:
+        binary_file_data = binary_file.read()
+        base64_encoded_data = base64.b64encode(binary_file_data)
+        base64_message = base64_encoded_data.decode('utf-8')
+        return base64_message

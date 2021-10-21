@@ -1,31 +1,40 @@
+import json
 import requests
 from django.conf import settings
 import os
+import base64
 
 API_PORT ="http://127.0.0.1:8080/api/"
+
+def image_decode(base64_img,img_name):
+    base64_img_bytes = base64_img.encode('utf-8')
+    with open(os.path.join(settings.MEDIA_ROOT, img_name), 'wb') as file_to_save:
+        decoded_image_data = base64.decodebytes(base64_img_bytes)
+        file_to_save.write(decoded_image_data)
+        return img_name
+
+def image_encode(img_name):
+    with open(os.path.join(settings.MEDIA_ROOT, img_name), 'rb') as binary_file:
+        binary_file_data = binary_file.read()
+        base64_encoded_data = base64.b64encode(binary_file_data)
+        base64_message = base64_encoded_data.decode('utf-8')
+        return base64_message
+
 def predict(origin_name, background_name):
-    file_dict ={}
-    with open(os.path.join(settings.MEDIA_ROOT,origin_name), "rb") as origin:
-        file_dict["imageOrigin"] = origin
-        with open(os.path.join(settings.MEDIA_ROOT,background_name), "rb") as background:
-            file_dict["imageBackground"]= background
-            response = requests.post(API_PORT+"upload/", files=file_dict)
-            print(response.text)
+    code_dict ={}
+    with open(os.path.join(settings.MEDIA_ROOT, origin_name), 'rb') as binary_file:
+        binary_file_data = binary_file.read()
+        base64_encoded_data = base64.b64encode(binary_file_data)
+        base64_message = base64_encoded_data.decode('utf-8')
+        code_dict["origin"]=base64_message
 
-# https://stackoverflow.com/questions/22567306/how-to-upload-file-with-python-requests
-# https://stackoverflow.com/questions/30229231/python-save-image-from-url
+    with open(os.path.join(settings.MEDIA_ROOT, background_name), 'rb') as binary_file:
+        binary_file_data = binary_file.read()
+        base64_encoded_data = base64.b64encode(binary_file_data)
+        base64_message = base64_encoded_data.decode('utf-8')
+        code_dict["background"]=base64_message
 
+    response = requests.post(API_PORT+"predict/", data=code_dict)
+    data = response.json()['predict']
+    return data
 
-    pic_url = API_PORT+'image_predict/'
-    new_pic_name = origin_name.split('.')[0]+background_name.split('.')[0]+'.jpg'
-
-    with open(os.path.join(settings.MEDIA_ROOT,new_pic_name), 'wb') as handle:
-        response = requests.get(pic_url, stream=True)
-        if not response.ok:
-            print(response)
-        else:
-            for block in response.iter_content(1024):
-                if not block:
-                    break
-                handle.write(block)
-    return new_pic_name
