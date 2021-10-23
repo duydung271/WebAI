@@ -4,6 +4,22 @@ from django.conf import settings
 import os
 import base64
 
+def request_img(url,name="pic.jpg"):
+    try:
+        response = requests.get(url, stream=True)
+    except:
+        return "Wrong"
+    if not response.ok:
+        print(response)
+        return "Wrong"
+    else:
+        with open(os.path.join(settings.MEDIA_ROOT,name), 'wb') as handle:
+            for block in response.iter_content(1024):
+                if not block:
+                    break
+                handle.write(block)
+            return name
+
 API_PORT ="http://127.0.0.1:8080/api/"
 
 def image_decode(base64_img,img_name):
@@ -37,4 +53,7 @@ def predict(origin_name, background_name):
     response = requests.post(API_PORT+"predict/", data=code_dict)
     data = response.json()['predict']
     return data
+
+
+
 

@@ -1,29 +1,26 @@
 {% extends "background.html" %}
 {%block content%}
-  <div class="container">
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">Using Upload Image</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="/home2/">Using Link Image</a>
-      </li>
-    </ul>
-    <h3 class="mb-4" style="text-align: center;color: #fff;">
-        {% comment %} <span style="color:#c93b28">AI + Django created by Duy Dung</span> {% endcomment %}
-    </h3>
-  </div>
   <div class="container-fluid">
-  <div class="container">
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} {{form}}
-      <input class="btn btn-primary" type="submit" value="Submit" />
-    </form>
-  </div>
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link"  href="/">Using Upload Image</a>
+        </li>
 
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home2/">Using Link Image</a>
+        </li>
+      </ul>
+      <h3 class="mb-4" style="text-align: center;color: #fff;">
+          {% comment %} <span style="color:#c93b28">AI + Django created by Duy Dung</span> {% endcomment %}
+      </h3>
+      <form method="POST">
+        {% csrf_token %} 
+        {{form}}
+        <input class="btn btn-primary" type="submit" value="Submit"> </input>
+      </form>
+    </div>
     
-    {%for item in object_list%}
     <div class="row align-items-center">
       <div class="col">
         <div class="row container">
@@ -82,5 +79,5 @@
         /> 
       </div>
     </div>
-    {% endfor %}
+   
 {% endblock %}
