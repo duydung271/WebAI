@@ -21,7 +21,7 @@ Các vấn đề còn tồn tại:
 Demo
 - Cấu trúc WEB
 
-![cautruc](https://github.com/duydung271/WebAI/blob/main/demo/cautruc.png)
+![cautruc](https://github.com/duydung271/WebAI/blob/main/demo/Cautruc.png)
 
 
 - Chức năng POST ảnh lên server và nhận respones là một ảnh đã được thay background
