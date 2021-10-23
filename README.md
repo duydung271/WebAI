@@ -19,6 +19,10 @@ Các vấn đề còn tồn tại:
 + GUI trông còn rối mắt và chưa được hợp lý
 
 Demo
+- Cấu trúc WEB
+
+![cautruc](https://github.com/duydung271/WebAI/blob/main/demo/cautruc.png)
+
 
 - Chức năng POST ảnh lên server và nhận respones là một ảnh đã được thay background
 
