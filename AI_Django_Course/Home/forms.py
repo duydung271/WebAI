@@ -7,7 +7,7 @@ class UploadFileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['imageOrigin'].label=mark_safe('<strong style="color:#51b340">Image Origin</strong>')
-        self.fields['imageBackground'].label=mark_safe('<strong style="color:#4085b3">Image Origin</strong>')
+        self.fields['imageBackground'].label=mark_safe('<strong style="color:#4085b3">Image Background</strong>')
 
     class Meta:
         model=Holder
