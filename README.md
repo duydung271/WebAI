@@ -24,13 +24,13 @@ Demo
 ![cautruc](https://github.com/duydung271/WebAI/blob/main/demo/Cautruc.png)
 
 
-- Chức năng POST ảnh lên server và nhận respones là một ảnh đã được thay background
+- Chức năng POST ảnh lên server và nhận response là một ảnh đã được thay background
 
 ![demo1](https://github.com/duydung271/WebAI/blob/main/demo/demo1.png)
 
 ![demo2](https://github.com/duydung271/WebAI/blob/main/demo/demo2.png)
 
-- Chức năng request ảnh từ một address image và nhận respones là một ảnh đã được thay background
+- Chức năng request ảnh từ một address image và nhận response là một ảnh đã được thay background
 
 ![demo3](https://github.com/duydung271/WebAI/blob/main/demo/demo3.png)
 
